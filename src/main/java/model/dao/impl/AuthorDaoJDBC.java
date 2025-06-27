@@ -1,10 +1,12 @@
 package model.dao.impl;
 
+import database.DatabaseConnection;
+import database.exceptions.DbException;
 import model.dao.AuthorDao;
 import model.entities.Author;
 import model.entities.Book;
 
-import java.sql.Connection;
+import java.sql.*;
 import java.util.List;
 
 public class AuthorDaoJDBC implements AuthorDao {
@@ -16,7 +18,36 @@ public class AuthorDaoJDBC implements AuthorDao {
 
     @Override
     public void insert(Author author) {
+        PreparedStatement preparedStatement = null;
 
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "INSERT INTO authors (name, nationality, birth_date, biography) VALUES (?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setString(1, author.getName());
+            preparedStatement.setString(2, author.getNationality());
+            preparedStatement.setDate(3, java.sql.Date.valueOf(author.getBirthDate()));
+            preparedStatement.setString(4, author.getBiography());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if(rowsAffected > 0) {
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
+
+                if (resultSet.next()) {
+                    int id = resultSet.getInt(1);
+                    author.setId(id);
+                }
+                DatabaseConnection.closeResultSet(resultSet);
+            } else {
+                throw new DbException("Unexpected error! No rows affected!");
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DatabaseConnection.closeStatement(preparedStatement);
+        }
     }
 
     @Override
