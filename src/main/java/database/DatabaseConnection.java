@@ -1,28 +1,47 @@
 package database;
 
+import database.exceptions.DbException;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
 public class DatabaseConnection {
-    private static Connection connection;
+    private static Connection connection = null;
 
-    public static void connect() {
-        try {
-            String url = "jdbc:postgresql://localhost:5432/library_system";
+    public static Connection getConnection() { // Faz a conexão com o banco de dados
+        if (connection == null) {
+            try {
+                Properties props = loadProperties(); // Chama metodo para pegar as propriedades no arquivo db.properties
+                String url = props.getProperty("url");
+                connection = DriverManager.getConnection(url);
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
+        }
+        return connection;
+    }
+
+    private static Properties loadProperties() { // Metodo para pegar as informações de conexão com banco de dados
+        try (FileInputStream fs = new FileInputStream("db.properties")) { // Le o arquivo db.properties
             Properties props = new Properties();
-            props.setProperty("user", "postgres");
-            props.setProperty("password", "123456");
-            Connection conn = DriverManager.getConnection(url, props);
-
-            System.out.println("Conexão com banco realizada com sucesso");
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            props.load(fs);
+            return props;
+        } catch (IOException e) {
+            throw new DbException(e.getMessage());
         }
     }
 
-    public static Connection getConnection() {
-        return connection;
+    public static void closeConnection() { // Fecha a conexão com banco de dados
+        if(connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
+        }
     }
 }
