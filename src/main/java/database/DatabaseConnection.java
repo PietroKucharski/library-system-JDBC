@@ -14,8 +14,8 @@ public class DatabaseConnection {
         if (connection == null) {
             try {
                 Properties props = loadProperties(); // Chama metodo para pegar as propriedades no arquivo db.properties
-                String url = props.getProperty("url");
-                connection = DriverManager.getConnection(url);
+                String url = props.getProperty("dburl");
+                connection = DriverManager.getConnection(url, props);
             } catch (SQLException e) {
                 throw new DbException(e.getMessage());
             }
