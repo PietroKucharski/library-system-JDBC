@@ -4,9 +4,7 @@ import database.exceptions.DbException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
 public class DatabaseConnection {
@@ -36,9 +34,29 @@ public class DatabaseConnection {
     }
 
     public static void closeConnection() { // Fecha a conexão com banco de dados
-        if(connection != null) {
+        if (connection != null) {
             try {
                 connection.close();
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
+        }
+    }
+
+    public static void closeStatement(Statement statement) { // Metodo criado para não precisar tratar o fechamento do statement
+        if (statement != null) {
+            try {
+                statement.close(); // metodo que fecha a conexão e o próprio objeto
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
+        }
+    }
+
+    public static void closeResultSet(ResultSet resultSet) { // Metodo criado para não precisar tratar o fechamento do resulset
+        if (resultSet != null) {
+            try {
+                resultSet.close(); // metodo que fecha a conexão e o próprio objeto
             } catch (SQLException e) {
                 throw new DbException(e.getMessage());
             }
