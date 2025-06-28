@@ -7,6 +7,7 @@ import model.entities.Author;
 import model.entities.Book;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AuthorDaoJDBC implements AuthorDao {
@@ -22,7 +23,7 @@ public class AuthorDaoJDBC implements AuthorDao {
 
         try {
             preparedStatement = connection.prepareStatement(
-                    "INSERT INTO authors (name, nationality, birth_date, biography) VALUES (?, ?, ?, ?)",
+                    "INSERT INTO authors (name, nationality, birth_date, biography) VALUES (?, ?, ?, ?);",
                     Statement.RETURN_GENERATED_KEYS);
 
             preparedStatement.setString(1, author.getName());
@@ -67,11 +68,37 @@ public class AuthorDaoJDBC implements AuthorDao {
 
     @Override
     public List<Author> findAll() {
-        return List.of();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement("SELECT * FROM public.authors;");
+            resultSet = preparedStatement.executeQuery();
+
+            List<Author> authors = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Author author = instantiateAuthor(resultSet);
+                authors.add(author);
+            }
+            return authors;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     @Override
     public List<Book> findAllBook(Author author) {
         return List.of();
+    }
+
+    private Author instantiateAuthor(ResultSet resultSet) throws SQLException {
+        Author author = new Author();
+        author.setId(resultSet.getInt("id"));
+        author.setName(resultSet.getString("name"));
+        author.setNationality(resultSet.getString("nationality"));
+        author.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
+        author.setBiography(resultSet.getString("biography"));
+        return author;
     }
 }
