@@ -1,9 +1,11 @@
 package model.entities;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Author {
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private Integer id;
     private String name;
     private String nationality;
@@ -70,5 +72,16 @@ public class Author {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", birthDate=" + birthDate.format(dtf) +
+                ", biography='" + biography + '\'' +
+                '}';
     }
 }
