@@ -33,7 +33,7 @@ public class AuthorDaoJDBC implements AuthorDao {
 
             int rowsAffected = preparedStatement.executeUpdate();
 
-            if(rowsAffected > 0) {
+            if (rowsAffected > 0) {
                 ResultSet resultSet = preparedStatement.getGeneratedKeys();
 
                 if (resultSet.next()) {
@@ -63,7 +63,24 @@ public class AuthorDaoJDBC implements AuthorDao {
 
     @Override
     public Author findById(Integer id) {
-        return null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement("SELECT * FROM authors WHERE id = ?;");
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return instantiateAuthor(resultSet);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DatabaseConnection.closeResultSet(resultSet);
+            DatabaseConnection.closeStatement(preparedStatement);
+        }
     }
 
     @Override
@@ -88,7 +105,7 @@ public class AuthorDaoJDBC implements AuthorDao {
     }
 
     @Override
-    public List<Book> findAllBook(Author author) {
+    public List<Book> findAllBooks(Author author) {
         return List.of();
     }
 
