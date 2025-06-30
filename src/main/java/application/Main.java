@@ -3,6 +3,7 @@ package application;
 import model.dao.AuthorDao;
 import model.dao.factory.DaoFactory;
 import model.entities.Author;
+import model.entities.Book;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,6 +30,12 @@ public class Main {
         }*/
 
         /* Testing Author findById() Method */
-        System.out.println(authorDao.findById(3));
+//        System.out.println(authorDao.findById(3));
+
+        /* Testing Author findAllBooks() Method */
+        List<Book> books = authorDao.findAllBooks("Clarice Lispector");
+        for (Book book : books) {
+            System.out.println(book);
+        }
     }
 }
