@@ -16,5 +16,5 @@ public interface AuthorDao {
 
     List<Author> findAll();
 
-    List<Book> findAllBooks(Author author);
+    List<Book> findAllBooks(String name);
 }
