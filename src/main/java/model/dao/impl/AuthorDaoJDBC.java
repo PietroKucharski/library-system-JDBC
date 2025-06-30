@@ -105,8 +105,27 @@ public class AuthorDaoJDBC implements AuthorDao {
     }
 
     @Override
-    public List<Book> findAllBooks(Author author) {
-        return List.of();
+    public List<Book> findAllBooks(String name) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement("SELECT b.* FROM books b JOIN authors a ON b.author_id = a.id WHERE a.name = ?;");
+            preparedStatement.setString(1, name);
+            resultSet = preparedStatement.executeQuery();
+
+            List<Book> books = new ArrayList<>();
+            while (resultSet.next()) {
+                Book book = instantiateBook(resultSet);
+                books.add(book);
+            }
+            return books;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DatabaseConnection.closeStatement(preparedStatement);
+            DatabaseConnection.closeResultSet(resultSet);
+        }
     }
 
     private Author instantiateAuthor(ResultSet resultSet) throws SQLException {
@@ -117,5 +136,24 @@ public class AuthorDaoJDBC implements AuthorDao {
         author.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
         author.setBiography(resultSet.getString("biography"));
         return author;
+    }
+
+    private Book instantiateBook(ResultSet resultSet) throws SQLException {
+        Book book = new Book();
+        book.setId(resultSet.getInt("id"));
+        book.setTitle(resultSet.getString("title"));
+
+        Author author = instantiateAuthor(resultSet);
+        book.setAuthor(author);
+
+        Date birthDate = resultSet.getDate("publication_date");
+        if (birthDate != null) {
+            book.setPublicationDate(birthDate.toLocalDate());
+        }
+
+        book.setGenre(resultSet.getString("genre"));
+        book.setAvailable(resultSet.getBoolean("is_available"));
+
+        return book;
     }
 }
