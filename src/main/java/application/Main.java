@@ -2,10 +2,8 @@ package application;
 
 import model.dao.AuthorDao;
 import model.dao.factory.DaoFactory;
-import model.entities.Author;
 import model.entities.Book;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class Main {
