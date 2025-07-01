@@ -1,9 +1,11 @@
 package model.entities;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Book {
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private Integer id;
     private String title;
     private Author author;
@@ -68,6 +70,19 @@ public class Book {
 
     public void setAvailable(Boolean available) {
         isAvailable = available;
+    }
+
+    @Override
+    public String
+    toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author=" + author +
+                ", publicationDate=" + publicationDate +
+                ", genre='" + genre + '\'' +
+                ", isAvailable=" + isAvailable +
+                '}';
     }
 
     @Override
