@@ -66,12 +66,14 @@ public class AuthorDaoJDBC implements AuthorDao {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        } finally {
+            DatabaseConnection.closeStatement(preparedStatement);
         }
     }
 
     @Override
     public void deleteById(Integer id) {
-        PreparedStatement preparedStatement;
+        PreparedStatement preparedStatement = null;
 
         try {
             preparedStatement = connection.prepareStatement("DELETE FROM public.authors WHERE id=?;");
@@ -79,6 +81,8 @@ public class AuthorDaoJDBC implements AuthorDao {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        } finally {
+            DatabaseConnection.closeStatement(preparedStatement);
         }
     }
 
@@ -122,6 +126,9 @@ public class AuthorDaoJDBC implements AuthorDao {
             return authors;
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        } finally {
+            DatabaseConnection.closeStatement(preparedStatement);
+            DatabaseConnection.closeResultSet(resultSet);
         }
     }
 
