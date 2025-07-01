@@ -1,14 +1,18 @@
 package application;
 
 import model.dao.AuthorDao;
+import model.dao.BookDao;
 import model.dao.factory.DaoFactory;
+import model.entities.Author;
 import model.entities.Book;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
         AuthorDao authorDao = DaoFactory.createAuthorDao();
+        BookDao bookDao = DaoFactory.createBookDao();
 
         /* Testing Author Insert Method */
         /*Author author = new Author(
@@ -31,8 +35,21 @@ public class Main {
 //        System.out.println(authorDao.findById(3));
 
         /* Testing Author findAllBooks() Method */
-        List<Book> books = authorDao.findAllBooks("Clarice Lispector");
+        /*List<Book> books = authorDao.findAllBooks("Clarice Lispector");
         for (Book book : books) {
+            System.out.println(book);
+        }*/
+
+        /*Author author = new Author();
+        author.setId(1);
+
+        Book book = new Book("O Senhor dos Anéis", author, LocalDate.of(1954, 7, 29), "Fantasia", true);
+
+        bookDao.insert(book);
+        System.out.println("Book Inserted! New id = " + book.getId());*/
+
+        List<Book> list = bookDao.findAll();
+        for (Book book : list) {
             System.out.println(book);
         }
     }
