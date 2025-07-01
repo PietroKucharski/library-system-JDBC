@@ -2,6 +2,8 @@ package model.dao;
 
 import model.entities.Book;
 
+import java.util.List;
+
 public interface BookDao {
     void insert(Book author);
 
@@ -14,4 +16,6 @@ public interface BookDao {
     Book findByTitle(String title);
 
     Book findByGenre(String genre);
+
+    List<Book> findAll();
 }
