@@ -53,12 +53,33 @@ public class AuthorDaoJDBC implements AuthorDao {
 
     @Override
     public void update(Author author) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement("UPDATE public.authors SET name=?, nationality=?, " +
+                    "birth_date=?, biography=? WHERE id = ?;");
+            preparedStatement.setString(1, author.getName());
+            preparedStatement.setString(2, author.getNationality());
+            preparedStatement.setDate(3, java.sql.Date.valueOf(author.getBirthDate()));
+            preparedStatement.setString(4, author.getBiography());
+            preparedStatement.setInt(5, author.getId());
 
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     @Override
     public void deleteById(Integer id) {
+        PreparedStatement preparedStatement;
 
+        try {
+            preparedStatement = connection.prepareStatement("DELETE FROM public.authors WHERE id=?;");
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     @Override
