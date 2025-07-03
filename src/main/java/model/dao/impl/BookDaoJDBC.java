@@ -106,24 +106,24 @@ public class BookDaoJDBC implements BookDao {
         }
     }
 
-    private Book instantiateBook(ResultSet rs) throws SQLException {
+    private Book instantiateBook(ResultSet resultSet) throws SQLException {
         Book book = new Book();
-        book.setId(rs.getInt("id"));
-        book.setTitle(rs.getString("title"));
-        book.setPublicationDate(rs.getDate("publication_date") != null
-                ? rs.getDate("publication_date").toLocalDate()
+        book.setId(resultSet.getInt("id"));
+        book.setTitle(resultSet.getString("title"));
+        book.setPublicationDate(resultSet.getDate("publication_date") != null
+                ? resultSet.getDate("publication_date").toLocalDate()
                 : null); // Verifico se há dentro do resultset
-        book.setGenre(rs.getString("genre"));
-        book.setAvailable(rs.getBoolean("is_available"));
+        book.setGenre(resultSet.getString("genre"));
+        book.setAvailable(resultSet.getBoolean("is_available"));
 
         Author author = new Author();
-        author.setId(rs.getInt("author_id"));
-        author.setName(rs.getString("author_name"));
-        author.setNationality(rs.getString("nationality"));
-        author.setBirthDate(rs.getDate("birth_date") != null
-                ? rs.getDate("birth_date").toLocalDate()
+        author.setId(resultSet.getInt("author_id"));
+        author.setName(resultSet.getString("author_name"));
+        author.setNationality(resultSet.getString("nationality"));
+        author.setBirthDate(resultSet.getDate("birth_date") != null
+                ? resultSet.getDate("birth_date").toLocalDate()
                 : null);
-        author.setBiography(rs.getString("biography"));
+        author.setBiography(resultSet.getString("biography"));
 
         book.setAuthor(author);
 
