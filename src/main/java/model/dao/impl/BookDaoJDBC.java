@@ -54,7 +54,23 @@ public class BookDaoJDBC implements BookDao {
 
     @Override
     public void update(Book book) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement("UPDATE public.books SET title=?, author_id=?, " +
+                    "publication_date=?, genre=?, is_available=? WHERE id=?;");
+            preparedStatement.setString(1, book.getTitle());
+            preparedStatement.setInt(2, book.getAuthor().getId());
+            preparedStatement.setDate(3, java.sql.Date.valueOf(book.getPublicationDate()));
+            preparedStatement.setString(4, book.getGenre());
+            preparedStatement.setBoolean(5, book.getAvailable());
+            preparedStatement.setInt(6, book.getId());
 
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DatabaseConnection.closeStatement(preparedStatement);
+        }
     }
 
     @Override
@@ -64,8 +80,8 @@ public class BookDaoJDBC implements BookDao {
 
     @Override
     public Book findById(Integer id) {
-        PreparedStatement preparedStatement;
-        ResultSet resultSet;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet =  null;
 
         try {
             preparedStatement = connection.prepareStatement("SELECT b.*, a.name as author_name, a.nationality, " +
@@ -79,13 +95,16 @@ public class BookDaoJDBC implements BookDao {
             return null;
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        } finally {
+            DatabaseConnection.closeStatement(preparedStatement);
+            DatabaseConnection.closeResultSet(resultSet);
         }
     }
 
     @Override
     public Book findByTitle(String title) {
-        PreparedStatement preparedStatement;
-        ResultSet resultSet;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
             preparedStatement = connection.prepareStatement("SELECT b.*, a.name as author_name, a.nationality, " +
@@ -99,13 +118,16 @@ public class BookDaoJDBC implements BookDao {
             return null;
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        } finally {
+            DatabaseConnection.closeStatement(preparedStatement);
+            DatabaseConnection.closeResultSet(resultSet);
         }
     }
 
     @Override
     public Book findByGenre(String genre) {
-        PreparedStatement preparedStatement;
-        ResultSet resultSet;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
             preparedStatement = connection.prepareStatement("SELECT b.*, a.name as author_name, a.nationality, " +
@@ -119,6 +141,9 @@ public class BookDaoJDBC implements BookDao {
             return null;
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        }  finally {
+            DatabaseConnection.closeStatement(preparedStatement);
+            DatabaseConnection.closeResultSet(resultSet);
         }
     }
 
