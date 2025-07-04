@@ -58,5 +58,8 @@ public class Main {
 
         /*Testing Book findById() Method*/
         /*System.out.println(bookDao.findById(1));*/
+
+        /*Testing Book findByTitle() Method*/
+        System.out.println(bookDao.findByTitle("O Senhor dos Anéis"));
     }
 }
