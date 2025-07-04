@@ -40,6 +40,8 @@ public class Main {
             System.out.println(book);
         }*/
 
+        /*---------------*/
+
         /*Author author = new Author();
         author.setId(1);
 
@@ -48,9 +50,13 @@ public class Main {
         bookDao.insert(book);
         System.out.println("Book Inserted! New id = " + book.getId());*/
 
-        List<Book> list = bookDao.findAll();
+        /*Testing Book findAll() Method */
+        /*List<Book> list = bookDao.findAll();
         for (Book book : list) {
             System.out.println(book);
-        }
+        }*/
+
+        /*Testing Book findById() Method*/
+        /*System.out.println(bookDao.findById(1));*/
     }
 }
