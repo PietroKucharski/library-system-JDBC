@@ -60,6 +60,9 @@ public class Main {
         /*System.out.println(bookDao.findById(1));*/
 
         /*Testing Book findByTitle() Method*/
-        System.out.println(bookDao.findByTitle("O Senhor dos Anéis"));
+        /*System.out.println(bookDao.findByTitle("O Senhor dos Anéis"));*/
+
+        /*Teting Book findByGenre() Method*/
+        System.out.println(bookDao.findByGenre("Fantasia"));
     }
 }
