@@ -104,7 +104,22 @@ public class BookDaoJDBC implements BookDao {
 
     @Override
     public Book findByGenre(String genre) {
-        return null;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+
+        try {
+            preparedStatement = connection.prepareStatement("SELECT b.*, a.name as author_name, a.nationality, " +
+                    "a.birth_date, a.biography FROM books b JOIN authors a ON b.author_id = a.id WHERE b.genre = ?;");
+            preparedStatement.setString(1, genre);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return instantiateBook(resultSet);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     @Override
