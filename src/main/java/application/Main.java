@@ -63,6 +63,13 @@ public class Main {
         /*System.out.println(bookDao.findByTitle("O Senhor dos Anéis"));*/
 
         /*Teting Book findByGenre() Method*/
-        System.out.println(bookDao.findByGenre("Fantasia"));
+        /*System.out.println(bookDao.findByGenre("Fantasia"));*/
+
+        /*Teting Book update() Method*/
+        Book book = bookDao.findById(1);
+        book.setTitle("Novo Título Atualizado");
+        book.setGenre("Ficção Científica");
+        book.setAvailable(false);
+        bookDao.update(book);
     }
 }
