@@ -2,9 +2,11 @@ package application;
 
 import model.dao.AuthorDao;
 import model.dao.BookDao;
+import model.dao.UserDao;
 import model.dao.factory.DaoFactory;
 import model.entities.Author;
 import model.entities.Book;
+import model.entities.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,6 +15,7 @@ public class Main {
     public static void main(String[] args) {
         AuthorDao authorDao = DaoFactory.createAuthorDao();
         BookDao bookDao = DaoFactory.createBookDao();
+        UserDao userDao = DaoFactory.createUserDao();
 
         /* Testing Author Insert Method */
         /*Author author = new Author(
@@ -66,10 +69,18 @@ public class Main {
         /*System.out.println(bookDao.findByGenre("Fantasia"));*/
 
         /*Teting Book update() Method*/
-        Book book = bookDao.findById(1);
+        /*Book book = bookDao.findById(1);
         book.setTitle("Novo Título Atualizado");
         book.setGenre("Ficção Científica");
         book.setAvailable(false);
-        bookDao.update(book);
+        bookDao.update(book);*/
+
+        User user = new User();
+        user.setName("Pietro Kucharski");
+        user.setEmail("pietro@email.com");
+        user.setCpf("52998224725");
+
+        userDao.insert(user);
+        System.out.println("Usuário inserido com ID: " + user.getId());
     }
 }
