@@ -90,5 +90,12 @@ public class Main {
 
         /*Testing User findById() Method*/
         /*System.out.println(userDao.findById(1));*/
+
+        /*Teting User update() Method*/
+        /*User user = userDao.findById(1);
+        user.setName("Vittor");
+        user.setEmail("vittorlanau@gmail.com");
+        user.setCpf("13238759990");
+        userDao.update(user);*/
     }
 }
