@@ -83,9 +83,12 @@ public class Main {
         userDao.insert(user);
         System.out.println("Usuário inserido com ID: " + user.getId());*/
 
-        List<User> list = userDao.findAll();
+        /*List<User> list = userDao.findAll();
         for (User users : list) {
             System.out.println(users);
-        }
+        }*/
+
+        /*Testing User findById() Method*/
+        /*System.out.println(userDao.findById(1));*/
     }
 }
