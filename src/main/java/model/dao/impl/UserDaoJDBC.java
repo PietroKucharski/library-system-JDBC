@@ -6,6 +6,7 @@ import model.dao.UserDao;
 import model.entities.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBC implements UserDao {
@@ -24,7 +25,8 @@ public class UserDaoJDBC implements UserDao {
                 throw new DbException("CPF inválido!");
             }
 
-            preparedStatement = connection.prepareStatement("INSERT INTO users (name, email, cpf) VALUES(?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement = connection.prepareStatement("INSERT INTO users (name, email, cpf) VALUES(?, ?, ?);",
+                    Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getEmail());
             preparedStatement.setString(3, user.getCpf());
@@ -41,6 +43,8 @@ public class UserDaoJDBC implements UserDao {
             }
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        } finally {
+            DatabaseConnection.closeStatement(preparedStatement);
         }
     }
 
@@ -61,7 +65,23 @@ public class UserDaoJDBC implements UserDao {
 
     @Override
     public List<User> findAll() {
-        return List.of();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement("SELECT * FROM users");
+            resultSet = preparedStatement.executeQuery();
+
+            List<User> users = new ArrayList<>();
+
+            while (resultSet.next()) {
+                User user = instantiateUser(resultSet);
+                users.add(user);
+            }
+
+            return users;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     private boolean isValidCPF(String cpf) {
@@ -97,5 +117,15 @@ public class UserDaoJDBC implements UserDao {
         } catch (Exception e) {
             throw new DbException(e.getMessage());
         }
+    }
+
+    private User instantiateUser(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        user.setId(resultSet.getInt("id"));
+        user.setName(resultSet.getString("name"));
+        user.setEmail(resultSet.getString("email"));
+        user.setCpf(resultSet.getString("cpf"));
+
+        return user;
     }
 }
