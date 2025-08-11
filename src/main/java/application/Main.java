@@ -19,11 +19,11 @@ public class Main {
 
         /* Testing Author Insert Method */
         /*Author author = new Author(
-                "Clarice Lispector",
+                "Cecília Meireles",
                 "Brasileira",
-                LocalDate.of(1920, 12, 10),
-                "Clarice foi uma escritora e jornalista conhecida por seu estilo introspectivo e obras como " +
-                        "'A Hora da Estrela'.");
+                LocalDate.of(1901, 11, 7),
+                "Cecília foi uma importante poetisa, professora e jornalista brasileira, conhecida por obras " +
+                        "como 'Romanceiro da Inconfidência' e por sua escrita lírica e intimista.");
 
         authorDao.insert(author);
         System.out.println("Author Inserted! New id = " + author.getId());*/
@@ -75,12 +75,17 @@ public class Main {
         book.setAvailable(false);
         bookDao.update(book);*/
 
-        User user = new User();
+        /*User user = new User();
         user.setName("Pietro Kucharski");
         user.setEmail("pietro@email.com");
         user.setCpf("52998224725");
 
         userDao.insert(user);
-        System.out.println("Usuário inserido com ID: " + user.getId());
+        System.out.println("Usuário inserido com ID: " + user.getId());*/
+
+        List<User> list = userDao.findAll();
+        for (User users : list) {
+            System.out.println(users);
+        }
     }
 }
