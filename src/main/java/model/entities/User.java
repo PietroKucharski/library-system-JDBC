@@ -50,6 +50,16 @@ public class User {
     }
 
     @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", cpf='" + cpf + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
@@ -60,4 +70,7 @@ public class User {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+//    public static String formatCPF(String cpf) {
+//    }
 }
