@@ -60,7 +60,25 @@ public class UserDaoJDBC implements UserDao {
 
     @Override
     public User findById(Integer id) {
-        return null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE id = ?;");
+            preparedStatement.setInt(1, id);
+
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return instantiateUser(resultSet);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DatabaseConnection.closeResultSet(resultSet);
+            DatabaseConnection.closeStatement(preparedStatement);
+        }
     }
 
     @Override
