@@ -68,7 +68,28 @@ public class LoanDaoJDBC implements LoanDao {
 
     @Override
     public Loan findById(Integer id) {
-        return null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement("SELECT l.id, l.user_id, l.book_id, l.date_loan," +
+                    "l.expected_return_date, l.return_date, u.name AS user_name, u.email, b.title AS book_title, a.name AS author_name, " +
+                    "a.birth_date FROM loans l JOIN users u ON l.user_id = u.id JOIN books b ON l.book_id = b.id JOIN authors a " +
+                    "ON b.author_id = a.id WHERE l.id = ?;", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return instantiateLoan(resultSet);
+            }
+
+            return null;
+        } catch (SQLException e) {
+            throw new  DbException(e.getMessage());
+        } finally {
+            DatabaseConnection.closeResultSet(resultSet);
+            DatabaseConnection.closeStatement(preparedStatement);
+        }
     }
 
     @Override
@@ -104,7 +125,6 @@ public class LoanDaoJDBC implements LoanDao {
             DatabaseConnection.closeStatement(preparedStatement);
         }
     }
-
 
     @Override
     public List<Loan> findByUserId(Integer userId) {
