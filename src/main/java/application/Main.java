@@ -107,9 +107,11 @@ public class Main {
         Loan loan = new Loan(book, user);
         loanDao.insert(loan);*/
 
-        List<Loan> list = loanDao.findAll();
+        /*List<Loan> list = loanDao.findAll();
         for (Loan loans : list) {
             System.out.println(loans);
-        }
+        }*/
+
+        System.out.println(loanDao.findById(2));
     }
 }
