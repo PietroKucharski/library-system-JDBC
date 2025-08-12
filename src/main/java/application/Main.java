@@ -101,10 +101,15 @@ public class Main {
         user.setCpf("13238759990");
         userDao.update(user);*/
 
-        User user = userDao.findById(1);
+        /*User user = userDao.findById(1);
         Book book = bookDao.findById(1);
 
         Loan loan = new Loan(book, user);
-        loanDao.insert(loan);
+        loanDao.insert(loan);*/
+
+        List<Loan> list = loanDao.findAll();
+        for (Loan loans : list) {
+            System.out.println(loans);
+        }
     }
 }
