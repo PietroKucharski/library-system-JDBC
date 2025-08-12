@@ -2,10 +2,12 @@ package application;
 
 import model.dao.AuthorDao;
 import model.dao.BookDao;
+import model.dao.LoanDao;
 import model.dao.UserDao;
 import model.dao.factory.DaoFactory;
 import model.entities.Author;
 import model.entities.Book;
+import model.entities.Loan;
 import model.entities.User;
 
 import java.time.LocalDate;
@@ -16,6 +18,7 @@ public class Main {
         AuthorDao authorDao = DaoFactory.createAuthorDao();
         BookDao bookDao = DaoFactory.createBookDao();
         UserDao userDao = DaoFactory.createUserDao();
+        LoanDao loanDao = DaoFactory.createLoanDao();
 
         /* Testing Author Insert Method */
         /*Author author = new Author(
@@ -35,7 +38,7 @@ public class Main {
         }*/
 
         /* Testing Author findById() Method */
-//        System.out.println(authorDao.findById(3));
+        /*System.out.println(authorDao.findById(3));*/
 
         /* Testing Author findAllBooks() Method */
         /*List<Book> books = authorDao.findAllBooks("Clarice Lispector");
@@ -97,5 +100,11 @@ public class Main {
         user.setEmail("vittorlanau@gmail.com");
         user.setCpf("13238759990");
         userDao.update(user);*/
+
+        User user = userDao.findById(1);
+        Book book = bookDao.findById(1);
+
+        Loan loan = new Loan(book, user);
+        loanDao.insert(loan);
     }
 }
