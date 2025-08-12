@@ -16,12 +16,12 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, Author author, LocalDate publicationDate, String genre, Boolean isAvailable) {
+    public Book(String title, Author author, LocalDate publicationDate, String genre) {
         this.title = title;
         this.author = author;
         this.publicationDate = publicationDate;
         this.genre = genre;
-        this.isAvailable = isAvailable;
+        this.isAvailable = true;
     }
 
     public Integer getId() {
