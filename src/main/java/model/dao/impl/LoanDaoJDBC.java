@@ -82,7 +82,9 @@ public class LoanDaoJDBC implements LoanDao {
         ResultSet resultSet = null;
 
         try {
-            preparedStatement = connection.prepareStatement("SELECT l.id, l.date_loan, l.expected_return_date, l.return_date, u.name AS user_name, u.email, b.title AS book_title, a.name AS author_name, a.birth_date FROM loans l JOIN users u\n" +
+            preparedStatement = connection.prepareStatement("SELECT l.id, l.date_loan, l.expected_return_date, " +
+                    "l.return_date, u.name AS user_name, u.email, b.title AS book_title, a.name AS author_name, " +
+                    "a.birth_date FROM loans l JOIN users u\n" +
                     "ON l.user_id = u.id JOIN books b ON l.book_id = b.id JOIN authors a ON b.author_id = a.id;");
 
             resultSet = preparedStatement.executeQuery();
