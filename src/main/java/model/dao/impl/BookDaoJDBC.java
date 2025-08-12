@@ -29,11 +29,8 @@ public class BookDaoJDBC implements BookDao {
             preparedStatement.setInt(2, book.getAuthor().getId());
             preparedStatement.setDate(3, java.sql.Date.valueOf(book.getPublicationDate()));
             preparedStatement.setString(4, book.getGenre());
-            if (book.getAvailable() != null) {
-                preparedStatement.setBoolean(5, book.getAvailable());
-            } else {
-                preparedStatement.setNull(5, Types.BOOLEAN);
-            }
+            preparedStatement.setBoolean(5, book.getAvailable());
+
             int affectedRows = preparedStatement.executeUpdate();
 
             if (affectedRows > 0) {
@@ -91,7 +88,7 @@ public class BookDaoJDBC implements BookDao {
     @Override
     public Book findById(Integer id) {
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet =  null;
+        ResultSet resultSet = null;
 
         try {
             preparedStatement = connection.prepareStatement("SELECT b.*, a.name as author_name, a.nationality, " +
@@ -151,7 +148,7 @@ public class BookDaoJDBC implements BookDao {
             return null;
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
-        }  finally {
+        } finally {
             DatabaseConnection.closeStatement(preparedStatement);
             DatabaseConnection.closeResultSet(resultSet);
         }
