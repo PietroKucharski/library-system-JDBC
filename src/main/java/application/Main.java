@@ -112,6 +112,8 @@ public class Main {
             System.out.println(loans);
         }*/
 
-        System.out.println(loanDao.findById(2));
+        /*System.out.println(loanDao.findById(2));*/
+
+        /*System.out.println(loanDao.findByBookTitle("Novo Título Atualizado"));*/
     }
 }
