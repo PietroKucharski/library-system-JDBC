@@ -14,7 +14,7 @@ public class Loan {
     public Loan() {
     }
 
-    public Loan(Book book, User user, LocalDate dateLoan) {
+    public Loan(Book book, User user) {
         this.book = book;
         this.user = user;
         this.dateLoan = LocalDate.now();
